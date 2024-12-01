@@ -1,0 +1,57 @@
+{
+  "name": "birthday-bot",
+  "version": "0.0.1",
+  "description": "Birthday Bot based on Discord.js",
+  "main": "index.js",
+  "scripts": {
+    "typeorm": "typeorm-ts-node-commonjs",
+    "start": "node --max-old-space-size=64 --expose-gc dist/src/App.js",
+    "debugstart": "node --inspect=0.0.0.0:3000 --max-old-space-size=64 --trace_gc --expose-gc --trace-deprecation --trace-warnings --trace-uncaught --track-heap-objects dist/src/App.js",
+    "checkcodestyle": "npx eslint ./**",
+    "autofixcodestyle": "npx eslint ./** --fix",
+    "ncu": "ncu",
+    "generatelocale": "node src/helper/LocaleGenerationHelper.js",
+    "build": "tsc --build"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/eliteSchwein/mooncord.git"
+  },
+  "keywords": [],
+  "author": "eliteSCHW31N",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/eliteSchwein/mooncord/issues"
+  },
+  "homepage": "https://github.com/eliteSchwein/mooncord#readme",
+  "devDependencies": {
+    "@discordjs/rest": "^2.4.0",
+    "@types/node": "^22.10.1",
+    "@types/readline-sync": "^1.4.8",
+    "async-wait-until": "2.0.12",
+    "axios": "^1.7.8",
+    "bytes": "^3.1.2",
+    "esbuild": "^0.24.0",
+    "eslint": "^9.16.0",
+    "eslint-plugin-node": "^11.1.0",
+    "eslint-plugin-promise": "^7.2.1",
+    "form-data": "^4.0.1",
+    "js-conf-parser": "^1.0.2",
+    "lodash": "^4.17.21",
+    "node-fetch": "^3.3.2",
+    "npm-check-updates": "^17.1.11",
+    "readline-sync": "^1.4.10",
+    "regex-parser": "^2.3.0",
+    "stacktrace-js": "^2.0.2",
+    "ts-node": "^10.9.2",
+    "typeorm": "^0.3.20",
+    "typescript": "^5.7.2",
+    "websocket-ts": "^2.1.5",
+    "ws": "^8.18.0"
+  },
+  "dependencies": {
+    "discord.js": "^14.16.3",
+    "reflect-metadata": "^0.2.2",
+    "sharp": "^0.33.5"
+  }
+}

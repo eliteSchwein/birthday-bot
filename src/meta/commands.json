@@ -1,0 +1,26 @@
+{
+  "set": {
+    "name": "set",
+    "description": "Setz dein Geburtsdatum.",
+    "options": [
+      {
+        "type": 3,
+        "name": "date",
+        "required": true,
+        "description": "Das Format ist TT.MM.JJJJ (das Jahr ist optional und kann ausgelassen werden)."
+      }
+    ]
+  },
+  "editchannel": {
+    "name": "editchannel",
+    "description": "Setz den channel.",
+    "options": [
+      {
+        "type": 7,
+        "name": "channel",
+        "required": true,
+        "description": "Channel für die Geburtstag Benachrichtigungen."
+      }
+    ]
+  }
+}
