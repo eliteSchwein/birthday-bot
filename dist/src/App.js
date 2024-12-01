@@ -11,7 +11,7 @@ const SchedulerHelper_1 = require("./helper/SchedulerHelper");
 void init();
 let discordClient;
 async function init() {
-    (0, LogHelper_1.logSuccess)(`Starting ${packageConfig.name} ${packageConfig.version} backend...`);
+    (0, LogHelper_1.logSuccess)(`Starting ${packageConfig.name} ${packageConfig.version}...`);
     (0, LogHelper_1.logRegular)('load config');
     (0, ConfigHelper_1.default)();
     (0, LogHelper_1.logRegular)('connect database');

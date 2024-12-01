@@ -8,7 +8,7 @@ function initScheduler() {
     const discordClient = (0, App_1.getDiscordClient)().getClient();
     setInterval(async () => {
         const time = new Date();
-        if (time.getHours() !== 20 && time.getMinutes() !== 15) {
+        if (time.getHours() !== 6 && time.getMinutes() !== 0) {
             return;
         }
         const users = await userRepository.getByDayAndMonth(time.getUTCDate(), time.getUTCMonth() + 1);

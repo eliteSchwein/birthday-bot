@@ -11,7 +11,7 @@ void init()
 let discordClient: DiscordClient;
 
 async function init() {
-    logSuccess(`Starting ${packageConfig.name} ${packageConfig.version} backend...`)
+    logSuccess(`Starting ${packageConfig.name} ${packageConfig.version}...`)
 
     logRegular('load config')
     readConfig()

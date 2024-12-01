@@ -16,9 +16,13 @@ class SetCommand extends BaseCommand_1.default {
         }
         const day = parseInt(parts[0], 10);
         const month = parseInt(parts[1], 10) - 1;
-        const year = parts.length === 3 ? parseInt(parts[2], 10) : 1990;
-        const showYear = parts.length === 3;
-        if (isNaN(day) || isNaN(month) || isNaN(year)) {
+        let year = parts.length === 3 ? parseInt(parts[2], 10) : 1990;
+        let showYear = parts.length === 3;
+        if (isNaN(year)) {
+            year = 1990;
+            showYear = false;
+        }
+        if (isNaN(day) || isNaN(month)) {
             await interaction.editReply("Das eingegebene Datum ist ungültig, bitte im Format TT.MM.JJJJ (Jahr ist optional).");
             return;
         }
