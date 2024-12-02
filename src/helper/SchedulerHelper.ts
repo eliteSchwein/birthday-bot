@@ -8,6 +8,8 @@ export function initScheduler() {
     setInterval(async () => {
         const time = new Date()
 
+        console.log(`${time.getHours()}:${time.getMinutes()}`)
+
         if(time.getHours() !== 6 && time.getMinutes() !== 0) {
             return
         }
