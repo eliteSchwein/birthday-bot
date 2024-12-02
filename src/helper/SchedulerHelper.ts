@@ -8,7 +8,7 @@ export function initScheduler() {
     setInterval(async () => {
         const time = new Date()
 
-        if(time.getHours() !== 5 && time.getMinutes() !== 0) {
+        if(time.getHours() !== 5 || time.getMinutes() !== 0) {
             return
         }
 
