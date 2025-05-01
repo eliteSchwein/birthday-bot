@@ -3,6 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.initScheduler = initScheduler;
 const UserRepository_1 = require("../repository/UserRepository");
 const App_1 = require("../App");
+const LogHelper_1 = require("./LogHelper");
 function initScheduler() {
     const userRepository = new UserRepository_1.default();
     const discordClient = (0, App_1.getDiscordClient)().getClient();
@@ -10,13 +11,25 @@ function initScheduler() {
         const time = new Date();
         let users = await userRepository.getAll();
         for (const user of users) {
-            const guild = user.guild;
-            const guildServer = await discordClient.guilds.fetch(`${guild.id}`);
-            const guildUser = await guildServer.members.fetch(`${user.userId}`);
-            if (guildUser) {
-                continue;
+            try {
+                const guild = user.guild;
+                const guildServer = await discordClient.guilds.fetch(`${guild.id}`);
+                try {
+                    await guildServer.members.fetch(`${user.userId}`);
+                }
+                catch (error) {
+                    if (error.code === 10007) {
+                        await userRepository.delete(user);
+                        (0, LogHelper_1.logNotice)(`Deleted user ${user.userId} (not found in guild)`);
+                    }
+                    else {
+                        (0, LogHelper_1.logWarn)(`Error fetching member ${user.userId}: ${JSON.stringify(error)}`);
+                    }
+                }
             }
-            await userRepository.delete(user);
+            catch (guildError) {
+                (0, LogHelper_1.logWarn)(`Error processing guild: ${JSON.stringify(guildError)}`);
+            }
         }
         if (time.getHours() !== 5 || time.getMinutes() !== 0) {
             return;
