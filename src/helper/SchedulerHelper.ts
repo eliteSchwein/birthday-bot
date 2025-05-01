@@ -1,6 +1,7 @@
 import UserRepository from "../repository/UserRepository";
 import {getDiscordClient} from "../App";
 import GuildRepository from "../repository/GuildRepository";
+import {logNotice, logWarn} from "./LogHelper";
 
 export function initScheduler() {
     const userRepository = new UserRepository()
@@ -11,16 +12,24 @@ export function initScheduler() {
 
         let users = await userRepository.getAll()
 
-        for(const user of users) {
-            const guild = user.guild
-            const guildServer = await discordClient.guilds.fetch(`${guild.id}`)
-            const guildUser = await guildServer.members.fetch(`${user.userId}`)
+        for (const user of users) {
+            try {
+                const guild = user.guild;
+                const guildServer = await discordClient.guilds.fetch(`${guild.id}`);
 
-            if(guildUser) {
-                continue
+                try {
+                    await guildServer.members.fetch(`${user.userId}`);
+                } catch (error) {
+                    if (error.code === 10007) {
+                        await userRepository.delete(user);
+                        logNotice(`Deleted user ${user.userId} (not found in guild)`)
+                    } else {
+                        logWarn(`Error fetching member ${user.userId}: ${JSON.stringify(error)}`);
+                    }
+                }
+            } catch (guildError) {
+                logWarn(`Error processing guild: ${JSON.stringify(guildError)}`);
             }
-
-            await userRepository.delete(user)
         }
 
         if(time.getHours() !== 5 || time.getMinutes() !== 0) {
