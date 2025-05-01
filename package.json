@@ -1,6 +1,6 @@
 {
   "name": "birthday-bot",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Birthday Bot based on Discord.js",
   "main": "index.js",
   "scripts": {

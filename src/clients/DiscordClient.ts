@@ -4,6 +4,7 @@ import {REST} from "@discordjs/rest";
 import {getConfig} from "../helper/ConfigHelper";
 import {registerCommands} from "../helper/CommandHelper";
 import {CommandInteraction} from "./interactions/CommandInteraction";
+import {ButtonInteraction} from "./interactions/ButtonInteraction";
 
 export class DiscordClient {
     protected discordClient: Client
@@ -71,6 +72,7 @@ export class DiscordClient {
             }
 
             await (new CommandInteraction()).handleInteraction(interaction)
+            await (new ButtonInteraction()).handleInteraction(interaction)
         })
     }
 

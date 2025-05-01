@@ -7,6 +7,7 @@ const rest_1 = require("@discordjs/rest");
 const ConfigHelper_1 = require("../helper/ConfigHelper");
 const CommandHelper_1 = require("../helper/CommandHelper");
 const CommandInteraction_1 = require("./interactions/CommandInteraction");
+const ButtonInteraction_1 = require("./interactions/ButtonInteraction");
 class DiscordClient {
     discordClient;
     restClient;
@@ -56,6 +57,7 @@ class DiscordClient {
                 return;
             }
             await (new CommandInteraction_1.CommandInteraction()).handleInteraction(interaction);
+            await (new ButtonInteraction_1.ButtonInteraction()).handleInteraction(interaction);
         });
     }
     async close() {

@@ -11,6 +11,10 @@
             }
         ]
     },
+    "list": {
+        "name": "list",
+        "description": "Liste alle Geburtstage."
+    },
     "editchannel": {
         "name": "editchannel",
         "description": "Setz den channel.",

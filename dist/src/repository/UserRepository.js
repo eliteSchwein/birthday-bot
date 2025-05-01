@@ -27,5 +27,26 @@ class UserRepository extends typeorm_1.Repository {
             .andWhere("MONTH(user.birthdate) = :month", { month })
             .getMany();
     }
+    async getUsersByPage(page, itemsPerPage, guild) {
+        return await this.createQueryBuilder('user')
+            .leftJoinAndSelect('user.guild', 'guild')
+            .where('guild.id = :guildId', { guildId: guild.id })
+            .addSelect(`
+            CASE
+                WHEN DAYOFYEAR(DATE(CONCAT(YEAR(CURDATE()), '-', MONTH(user.birthDate), '-', DAY(user.birthDate)))) >= DAYOFYEAR(CURDATE())
+                THEN DAYOFYEAR(DATE(CONCAT(YEAR(CURDATE()), '-', MONTH(user.birthDate), '-', DAY(user.birthDate))))
+                ELSE DAYOFYEAR(DATE(CONCAT(YEAR(CURDATE())+1, '-', MONTH(user.birthDate), '-', DAY(user.birthDate))))
+            END`, 'nextBirthdayDayOfYear')
+            .orderBy('nextBirthdayDayOfYear', 'ASC')
+            .skip(page * itemsPerPage)
+            .take(itemsPerPage)
+            .getMany();
+    }
+    async countUsersByGuild(guild) {
+        return await this.createQueryBuilder('user')
+            .leftJoinAndSelect('user.guild', 'guild')
+            .where("guild.id = :guildId", { guildId: guild.id })
+            .getCount();
+    }
 }
 exports.default = UserRepository;

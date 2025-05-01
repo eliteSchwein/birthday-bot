@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+const discord_js_1 = require("discord.js");
 const UserRepository_1 = require("../../repository/UserRepository");
 const GuildRepository_1 = require("../../repository/GuildRepository");
 class BaseCommand {
@@ -19,7 +20,12 @@ class BaseCommand {
         this.guild = interaction.guild;
         this.user = interaction.user;
         if (this.defer) {
-            await interaction.deferReply({ ephemeral: this.ephemeral });
+            if (this.ephemeral) {
+                await interaction.deferReply({ flags: [discord_js_1.MessageFlagsBitField.Flags.Ephemeral] });
+            }
+            else {
+                await interaction.deferReply();
+            }
         }
         await this.handleCommand(interaction);
     }

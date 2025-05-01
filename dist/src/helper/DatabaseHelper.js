@@ -19,7 +19,7 @@ async function connectDatabase() {
         password: config.password,
         database: config.database,
         entities: [GuildEntity_1.GuildEntity, UserEntitiy_1.UserEntity],
-        synchronize: true,
+        synchronize: true
     });
     connection = await AppDataSource.initialize();
     await connection.synchronize();

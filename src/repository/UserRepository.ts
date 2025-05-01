@@ -38,4 +38,29 @@ export default class UserRepository extends Repository<UserEntity>{
             .andWhere("MONTH(user.birthdate) = :month", { month })
             .getMany()
     }
+
+    public async getUsersByPage(page: number, itemsPerPage: number, guild: GuildEntity) {
+        return await this.createQueryBuilder('user')
+            .leftJoinAndSelect('user.guild', 'guild')
+            .where('guild.id = :guildId', { guildId: guild.id })
+            .addSelect(`
+            CASE
+                WHEN DAYOFYEAR(DATE(CONCAT(YEAR(CURDATE()), '-', MONTH(user.birthDate), '-', DAY(user.birthDate)))) >= DAYOFYEAR(CURDATE())
+                THEN DAYOFYEAR(DATE(CONCAT(YEAR(CURDATE()), '-', MONTH(user.birthDate), '-', DAY(user.birthDate))))
+                ELSE DAYOFYEAR(DATE(CONCAT(YEAR(CURDATE())+1, '-', MONTH(user.birthDate), '-', DAY(user.birthDate))))
+            END`, 'nextBirthdayDayOfYear')
+            .orderBy('nextBirthdayDayOfYear', 'ASC')
+            .skip(page * itemsPerPage)
+            .take(itemsPerPage)
+            .getMany();
+    }
+
+    public async countUsersByGuild(guild: GuildEntity) {
+        return await this.createQueryBuilder(
+            'user'
+        )
+            .leftJoinAndSelect('user.guild', 'guild')
+            .where("guild.id = :guildId", { guildId: guild.id })
+            .getCount()
+    }
 }

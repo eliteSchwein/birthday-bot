@@ -1,4 +1,4 @@
-import {ChatInputCommandInteraction, Guild, GuildMember, User} from "discord.js";
+import {ChatInputCommandInteraction, Guild, GuildMember, MessageFlagsBitField, User} from "discord.js";
 import UserRepository from "../../repository/UserRepository";
 import GuildRepository from "../../repository/GuildRepository";
 
@@ -22,7 +22,11 @@ export default class BaseCommand {
         this.user = interaction.user
 
         if (this.defer) {
-            await interaction.deferReply({ephemeral: this.ephemeral})
+            if(this.ephemeral) {
+                await interaction.deferReply({flags: [MessageFlagsBitField.Flags.Ephemeral]})
+            } else {
+                await interaction.deferReply()
+            }
         }
 
         await this.handleCommand(interaction)

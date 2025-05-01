@@ -16,7 +16,7 @@ export async function connectDatabase() {
         password: config.password,
         database: config.database,
         entities: [GuildEntity, UserEntity],
-        synchronize: true,
+        synchronize: true
     })
 
     connection = await AppDataSource.initialize()
