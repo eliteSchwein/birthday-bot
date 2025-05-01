@@ -33,7 +33,6 @@ class UserRepository extends typeorm_1.Repository {
             .getMany();
     }
     async getUsersByPage(page, itemsPerPage, guild) {
-        // 1. First get the next 3 upcoming birthdays (after today)
         const upcoming = await this.createQueryBuilder('user')
             .leftJoinAndSelect('user.guild', 'guild')
             .where('guild.id = :guildId', { guildId: guild.id })
@@ -47,7 +46,6 @@ class UserRepository extends typeorm_1.Repository {
             .addOrderBy('birthDay', 'ASC')
             .take(3)
             .getMany();
-        // 2. Then get remaining users with proper sorting
         const remainingQuery = this.createQueryBuilder('user')
             .leftJoinAndSelect('user.guild', 'guild')
             .where('guild.id = :guildId', { guildId: guild.id })
@@ -58,26 +56,21 @@ class UserRepository extends typeorm_1.Repository {
                 THEN (MONTH(user.birthDate) * 100 + DAY(user.birthDate))  -- Upcoming: sort ascending
                 ELSE (MONTH(user.birthDate) * 100 + DAY(user.birthDate)) * -1  -- Past: sort descending (negative)
             END`, 'sortableDate')
-            .orderBy('sortableDate', 'ASC'); // ASC sorts negative numbers first (most recent past dates)
-        // Exclude already shown upcoming birthdays
+            .orderBy('sortableDate', 'ASC');
         if (upcoming.length > 0) {
             remainingQuery.andWhere('user.id NOT IN (:...upcomingIds)', {
                 upcomingIds: upcoming.map(u => u.id)
             });
         }
-        // 3. Handle pagination
         if (page === 0) {
-            // First page shows upcoming + remaining
             const remaining = await remainingQuery
                 .take(itemsPerPage - upcoming.length)
                 .getMany();
             return [...upcoming, ...remaining].slice(0, itemsPerPage);
         }
         else {
-            // Other pages show only remaining
-            const adjustedPage = page - 1;
             return await remainingQuery
-                .skip(adjustedPage * itemsPerPage)
+                .skip(page * itemsPerPage)
                 .take(itemsPerPage)
                 .getMany();
         }

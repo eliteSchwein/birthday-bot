@@ -14,7 +14,7 @@ import {getDiscordClient} from "../App";
 
 export class PageHelper {
     protected userRepository = new UserRepository()
-    protected entries = 8
+    protected entries = 6
 
     public async generatePage(pageNumber: number, guild: GuildEntity) {
         const userCount = await this.userRepository.countUsersByGuild(guild)
@@ -24,13 +24,29 @@ export class PageHelper {
         if(pageNumber > maxPage - 1) pageNumber = 0
         if(pageNumber < 0) pageNumber = maxPage - 1
 
-        const currentEntries = await this.userRepository.getUsersByPage(pageNumber, this.entries, guild)
+        let entriesLimit = this.entries
+
+        const currentEntries = await this.userRepository.getUsersByPage(pageNumber, entriesLimit, guild)
 
         const container = new ContainerBuilder()
+
+        if(pageNumber === 0) {
+            container.addTextDisplayComponents(new TextDisplayBuilder()
+                .setContent("## Die nächsten 3 Geburtstage:")
+            )
+        }
+
+        let currentIndex = 0
 
         for(const entry of currentEntries) {
             const user = await discordClient.getClient().users.fetch(`${entry.userId}`)
             const section = new SectionBuilder()
+
+            if(currentIndex === 2 && pageNumber === 0) {
+                container.addTextDisplayComponents(new TextDisplayBuilder()
+                    .setContent("## Vergangene Geburtstage:")
+                )
+            }
 
             const thumbnailBuilder = new ThumbnailBuilder()
                 .setURL(user.avatarURL())
@@ -53,6 +69,8 @@ export class PageHelper {
 
             container.addSectionComponents(section)
             //container.addSeparatorComponents(seperator)
+
+            currentIndex++
         }
 
         const pagination = new TextDisplayBuilder()
