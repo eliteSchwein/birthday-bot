@@ -14,11 +14,11 @@ class ButtonInteraction {
         const customId = interaction.customId;
         if (customId.startsWith("page_")) {
             const newPage = Number.parseInt(customId.replace("page_", ""));
-            //await interaction.deferReply()
+            await interaction.deferReply();
             const message = await this.pageHelper.generatePage(newPage, guild);
             // @ts-ignore
             await interaction.message.edit(message);
-            //await interaction.deleteReply()
+            await interaction.deleteReply();
             return;
         }
     }

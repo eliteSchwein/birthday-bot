@@ -70,7 +70,7 @@ class UserRepository extends typeorm_1.Repository {
         }
         else {
             return await remainingQuery
-                .skip(page * itemsPerPage)
+                .skip((page * itemsPerPage) - 1)
                 .take(itemsPerPage)
                 .getMany();
         }

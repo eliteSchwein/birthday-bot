@@ -26,7 +26,7 @@ class PageHelper {
         for (const entry of currentEntries) {
             const user = await discordClient.getClient().users.fetch(`${entry.userId}`);
             const section = new discord_js_1.SectionBuilder();
-            if (currentIndex === 2 && pageNumber === 0) {
+            if (currentIndex === 3 && pageNumber === 0) {
                 container.addTextDisplayComponents(new discord_js_1.TextDisplayBuilder()
                     .setContent("## Vergangene Geburtstage:"));
             }

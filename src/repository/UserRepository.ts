@@ -87,7 +87,7 @@ export default class UserRepository extends Repository<UserEntity>{
             return [...upcoming, ...remaining].slice(0, itemsPerPage);
         } else {
             return await remainingQuery
-                .skip(page * itemsPerPage)
+                .skip((page * itemsPerPage) - 1)
                 .take(itemsPerPage)
                 .getMany();
         }
