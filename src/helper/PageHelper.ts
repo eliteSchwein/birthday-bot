@@ -14,7 +14,7 @@ import {getDiscordClient} from "../App";
 
 export class PageHelper {
     protected userRepository = new UserRepository()
-    protected entries = 10
+    protected entries = 8
 
     public async generatePage(pageNumber: number, guild: GuildEntity) {
         const userCount = await this.userRepository.countUsersByGuild(guild)
@@ -51,7 +51,7 @@ export class PageHelper {
 
             section.setThumbnailAccessory(thumbnailBuilder).addTextDisplayComponents(textBuilder)
 
-            container.addSectionComponents(section)
+            //container.addSectionComponents(section)
             container.addSeparatorComponents(seperator)
         }
 

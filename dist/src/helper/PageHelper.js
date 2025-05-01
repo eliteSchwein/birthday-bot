@@ -6,7 +6,7 @@ const discord_js_1 = require("discord.js");
 const App_1 = require("../App");
 class PageHelper {
     userRepository = new UserRepository_1.default();
-    entries = 10;
+    entries = 8;
     async generatePage(pageNumber, guild) {
         const userCount = await this.userRepository.countUsersByGuild(guild);
         const maxPage = Math.ceil(userCount / this.entries);
@@ -32,7 +32,7 @@ class PageHelper {
                 .setDivider(true)
                 .setSpacing(1);
             section.setThumbnailAccessory(thumbnailBuilder).addTextDisplayComponents(textBuilder);
-            container.addSectionComponents(section);
+            //container.addSectionComponents(section)
             container.addSeparatorComponents(seperator);
         }
         const pagination = new discord_js_1.TextDisplayBuilder()
