@@ -1,5 +1,6 @@
 import UserRepository from "../repository/UserRepository";
 import {getDiscordClient} from "../App";
+import GuildRepository from "../repository/GuildRepository";
 
 export function initScheduler() {
     const userRepository = new UserRepository()
@@ -8,11 +9,25 @@ export function initScheduler() {
     setInterval(async () => {
         const time = new Date()
 
+        let users = await userRepository.getAll()
+
+        for(const user of users) {
+            const guild = user.guild
+            const guildServer = await discordClient.guilds.fetch(`${guild.id}`)
+            const guildUser = await guildServer.members.fetch(`${user.userId}`)
+
+            if(guildUser) {
+                continue
+            }
+
+            await userRepository.delete(user)
+        }
+
         if(time.getHours() !== 5 || time.getMinutes() !== 0) {
             return
         }
 
-        const users = await userRepository.getByDayAndMonth(
+        users = await userRepository.getByDayAndMonth(
             time.getUTCDate(),
             time.getUTCMonth() + 1,
         )
