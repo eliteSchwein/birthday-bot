@@ -51,8 +51,8 @@ export class PageHelper {
 
             section.setThumbnailAccessory(thumbnailBuilder).addTextDisplayComponents(textBuilder)
 
-            //container.addSectionComponents(section)
-            container.addSeparatorComponents(seperator)
+            container.addSectionComponents(section)
+            //container.addSeparatorComponents(seperator)
         }
 
         const pagination = new TextDisplayBuilder()

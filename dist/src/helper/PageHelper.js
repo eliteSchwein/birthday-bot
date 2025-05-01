@@ -32,8 +32,8 @@ class PageHelper {
                 .setDivider(true)
                 .setSpacing(1);
             section.setThumbnailAccessory(thumbnailBuilder).addTextDisplayComponents(textBuilder);
-            //container.addSectionComponents(section)
-            container.addSeparatorComponents(seperator);
+            container.addSectionComponents(section);
+            //container.addSeparatorComponents(seperator)
         }
         const pagination = new discord_js_1.TextDisplayBuilder()
             .setContent(`Seite ${pageNumber + 1} von ${maxPage}`);
