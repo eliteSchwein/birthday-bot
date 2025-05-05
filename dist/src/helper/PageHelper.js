@@ -11,6 +11,11 @@ class PageHelper {
         const userCount = await this.userRepository.countUsersByGuild(guild);
         const maxPage = Math.ceil(userCount / this.entries);
         const discordClient = (0, App_1.getDiscordClient)();
+        if (maxPage === 0) {
+            return {
+                content: "😥 keiner hat sein Geburtstag eingetragen."
+            };
+        }
         if (pageNumber > maxPage - 1)
             pageNumber = 0;
         if (pageNumber < 0)

@@ -21,6 +21,12 @@ export class PageHelper {
         const maxPage = Math.ceil(userCount / this.entries)
         const discordClient = getDiscordClient()
 
+        if(maxPage === 0) {
+            return {
+                content: "😥 keiner hat sein Geburtstag eingetragen."
+            }
+        }
+
         if(pageNumber > maxPage - 1) pageNumber = 0
         if(pageNumber < 0) pageNumber = maxPage - 1
 
