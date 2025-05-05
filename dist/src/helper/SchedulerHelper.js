@@ -19,6 +19,7 @@ function initScheduler() {
                 }
                 catch (error) {
                     if (error.code === 10007) {
+                        await userRepository.remove(user);
                         await userRepository.delete(user);
                         (0, LogHelper_1.logNotice)(`Deleted user ${user.userId} (not found in guild)`);
                     }

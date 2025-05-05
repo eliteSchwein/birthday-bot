@@ -9,7 +9,7 @@ class UserRepository extends typeorm_1.Repository {
         super(UserEntitiy_1.UserEntity, (0, DatabaseHelper_1.getConnection)().createEntityManager());
     }
     async createUser(guild, user) {
-        const presentUser = await this.findOneBy({ userId: BigInt(user.id) });
+        const presentUser = await this.findOneBy({ userId: BigInt(user.id), guild: { id: guild.id } });
         if (presentUser) {
             return presentUser;
         }
@@ -19,6 +19,9 @@ class UserRepository extends typeorm_1.Repository {
         await this.save(newUser);
         (0, LogHelper_1.logRegular)(`User created: ${newUser.userId}`);
         return newUser;
+    }
+    async findOneByUserAndGuild(guild, user) {
+        return await this.findOneBy({ userId: BigInt(user.id), guild: { id: guild.id } });
     }
     async getAll() {
         return await this.createQueryBuilder('user')
