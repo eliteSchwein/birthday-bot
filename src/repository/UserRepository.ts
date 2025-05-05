@@ -11,7 +11,7 @@ export default class UserRepository extends Repository<UserEntity>{
     }
 
     public async createUser(guild: GuildEntity, user: User) {
-        const presentUser = await this.findOneBy({userId: BigInt(user.id)})
+        const presentUser = await this.findOneBy({userId: BigInt(user.id), guild: { id: guild.id }});
 
         if(presentUser) {
             return presentUser
@@ -27,6 +27,10 @@ export default class UserRepository extends Repository<UserEntity>{
         logRegular(`User created: ${newUser.userId}`)
 
         return newUser
+    }
+
+    public async findOneByUserAndGuild(guild: GuildEntity, user: User) {
+        return await this.findOneBy({userId: BigInt(user.id), guild: { id: guild.id }})
     }
 
     public async getAll() {

@@ -11,6 +11,36 @@
       }
     ]
   },
+  "delete": {
+    "name": "delete",
+    "description": "Löscht einen Benutzer aus der Geburtstags Liste.",
+    "options": [
+      {
+        "type": 6,
+        "name": "user",
+        "required": true,
+        "description": "Der Benutzer wo gelöscht werden soll."
+      }
+    ]
+  },
+  "set_other": {
+    "name": "set_other",
+    "description": "Setz das Geburtsdatum von jemand anderst.",
+    "options": [
+      {
+        "type": 6,
+        "name": "user",
+        "required": true,
+        "description": "Der Benutzer wo bearbeitet werden soll."
+      },
+      {
+        "type": 3,
+        "name": "date",
+        "required": true,
+        "description": "Das Format ist TT.MM.JJJJ (das Jahr ist optional und kann ausgelassen werden)."
+      }
+    ]
+  },
   "list": {
     "name": "list",
     "description": "Liste alle Geburtstage."

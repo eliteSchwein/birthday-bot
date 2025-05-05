@@ -21,7 +21,8 @@ export function initScheduler() {
                     await guildServer.members.fetch(`${user.userId}`);
                 } catch (error) {
                     if (error.code === 10007) {
-                        await userRepository.delete(user);
+                        await userRepository.remove(user)
+                        await userRepository.delete(user)
                         logNotice(`Deleted user ${user.userId} (not found in guild)`)
                     } else {
                         logWarn(`Error fetching member ${user.userId}: ${JSON.stringify(error)}`);
