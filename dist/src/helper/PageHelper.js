@@ -35,8 +35,12 @@ class PageHelper {
                 container.addTextDisplayComponents(new discord_js_1.TextDisplayBuilder()
                     .setContent("## Vergangene Geburtstage:"));
             }
+            let avatarUrl = user.avatarURL();
+            if (!avatarUrl) {
+                avatarUrl = "https://eliteschw31n.de/fileadmin/external_assets/party-blower.png";
+            }
             const thumbnailBuilder = new discord_js_1.ThumbnailBuilder()
-                .setURL(user.avatarURL());
+                .setURL(avatarUrl);
             let birthday = `${entry.birthDate.getDate()}.${entry.birthDate.getMonth() + 1}`;
             const textBuilder = new discord_js_1.TextDisplayBuilder()
                 .setContent([

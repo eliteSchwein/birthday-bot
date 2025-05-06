@@ -54,8 +54,14 @@ export class PageHelper {
                 )
             }
 
+            let avatarUrl = user.avatarURL()
+
+            if(!avatarUrl) {
+                avatarUrl = "https://eliteschw31n.de/fileadmin/external_assets/party-blower.png"
+            }
+
             const thumbnailBuilder = new ThumbnailBuilder()
-                .setURL(user.avatarURL())
+                .setURL(avatarUrl)
 
             let birthday = `${entry.birthDate.getDate()}.${entry.birthDate.getMonth() + 1}`
 
