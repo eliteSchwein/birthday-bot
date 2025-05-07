@@ -38,11 +38,12 @@ class UserRepository extends typeorm_1.Repository {
     async getUsersByPage(page, itemsPerPage, guild) {
         const upcoming = await this.createQueryBuilder('user')
             .leftJoinAndSelect('user.guild', 'guild')
-            .where('guild.id = :guildId', { guildId: guild.id })
-            .andWhere(`
-            (MONTH(user.birthDate) > MONTH(CURRENT_DATE)) OR
-            (MONTH(user.birthDate) = MONTH(CURRENT_DATE) AND DAY(user.birthDate) >= DAY(CURRENT_DATE))
-        `)
+            .where(`
+            guild.id = :guildId AND (
+                (MONTH(user.birthDate) > MONTH(CURRENT_DATE)) OR
+                (MONTH(user.birthDate) = MONTH(CURRENT_DATE) AND DAY(user.birthDate) >= DAY(CURRENT_DATE))
+            )
+            `, { guildId: guild.id })
             .addSelect('MONTH(user.birthDate)', 'birthMonth')
             .addSelect('DAY(user.birthDate)', 'birthDay')
             .orderBy('birthMonth', 'ASC')

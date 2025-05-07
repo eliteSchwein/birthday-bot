@@ -54,11 +54,12 @@ export default class UserRepository extends Repository<UserEntity>{
     public async getUsersByPage(page: number, itemsPerPage: number, guild: GuildEntity) {
         const upcoming = await this.createQueryBuilder('user')
             .leftJoinAndSelect('user.guild', 'guild')
-            .where('guild.id = :guildId', { guildId: guild.id })
-            .andWhere(`
-            (MONTH(user.birthDate) > MONTH(CURRENT_DATE)) OR
-            (MONTH(user.birthDate) = MONTH(CURRENT_DATE) AND DAY(user.birthDate) >= DAY(CURRENT_DATE))
-        `)
+            .where(`
+            guild.id = :guildId AND (
+                (MONTH(user.birthDate) > MONTH(CURRENT_DATE)) OR
+                (MONTH(user.birthDate) = MONTH(CURRENT_DATE) AND DAY(user.birthDate) >= DAY(CURRENT_DATE))
+            )
+            `, { guildId: guild.id })
             .addSelect('MONTH(user.birthDate)', 'birthMonth')
             .addSelect('DAY(user.birthDate)', 'birthDay')
             .orderBy('birthMonth', 'ASC')
