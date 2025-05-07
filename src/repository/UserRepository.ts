@@ -46,8 +46,7 @@ export default class UserRepository extends Repository<UserEntity>{
                 'user'
             )
             .leftJoinAndSelect('user.guild', 'guild')
-            .where("DAY(user.birthdate) = :day", { day })
-            .andWhere("MONTH(user.birthdate) = :month", { month })
+            .where("DAY(user.birthdate) = :day AND MONTH(user.birthdate) = :month", { day: day, month: month })
             .getMany()
     }
 

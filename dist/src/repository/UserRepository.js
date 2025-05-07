@@ -31,8 +31,7 @@ class UserRepository extends typeorm_1.Repository {
     async getByDayAndMonth(day, month) {
         return await this.createQueryBuilder('user')
             .leftJoinAndSelect('user.guild', 'guild')
-            .where("DAY(user.birthdate) = :day", { day })
-            .andWhere("MONTH(user.birthdate) = :month", { month })
+            .where("DAY(user.birthdate) = :day AND MONTH(user.birthdate) = :month", { day: day, month: month })
             .getMany();
     }
     async getUsersByPage(page, itemsPerPage, guild) {
