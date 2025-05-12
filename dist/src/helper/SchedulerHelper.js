@@ -32,7 +32,13 @@ function initScheduler() {
                 (0, LogHelper_1.logWarn)(`Error processing guild: ${JSON.stringify(guildError)}`);
             }
         }
-        if (time.getHours() !== 5 || time.getMinutes() !== 0) {
+        const formatter = new Intl.DateTimeFormat('de-DE', {
+            hour: '2-digit',
+            minute: '2-digit',
+            hour12: false,
+            timeZone: 'Europe/Berlin'
+        });
+        if (formatter.format(time) !== '00:00') {
             return;
         }
         users = await userRepository.getByDayAndMonth(time.getUTCDate(), time.getUTCMonth() + 1);

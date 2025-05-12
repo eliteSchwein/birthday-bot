@@ -33,7 +33,14 @@ export function initScheduler() {
             }
         }
 
-        if(time.getHours() !== 5 || time.getMinutes() !== 0) {
+        const formatter = new Intl.DateTimeFormat('de-DE', {
+            hour: '2-digit',
+            minute: '2-digit',
+            hour12: false,
+            timeZone: 'Europe/Berlin'
+        })
+
+        if(formatter.format(time) !== '00:00') {
             return
         }
 
