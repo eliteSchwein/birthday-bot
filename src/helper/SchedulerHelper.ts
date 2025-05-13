@@ -40,7 +40,7 @@ export function initScheduler() {
             timeZone: 'Europe/Berlin'
         })
 
-        if(formatter.format(time) !== '00:00') {
+        if(formatter.format(time) !== '01:00') {
             return
         }
 
