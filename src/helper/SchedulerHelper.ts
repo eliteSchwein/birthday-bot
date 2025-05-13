@@ -40,14 +40,22 @@ export function initScheduler() {
             timeZone: 'Europe/Berlin'
         })
 
-        if(formatter.format(time) !== '01:00') {
+        if(formatter.format(time) !== '00:00') {
             return
         }
 
-        users = await userRepository.getByDayAndMonth(
-            time.getUTCDate(),
-            time.getUTCMonth() + 1,
-        )
+        const dateFormatter = new Intl.DateTimeFormat('de-DE', {
+            day: '2-digit',
+            month: '2-digit',
+            timeZone: 'Europe/Berlin'
+        })
+
+        const [dayStr, monthStr] = dateFormatter.format(time).split('.');
+        const day = parseInt(dayStr, 10);
+        const month = parseInt(monthStr, 10);
+
+
+        users = await userRepository.getByDayAndMonth(day, month)
 
         for(const user of users) {
             const guild = user.guild
