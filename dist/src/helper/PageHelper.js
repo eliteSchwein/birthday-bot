@@ -37,7 +37,7 @@ class PageHelper {
             }
             let avatarUrl = user.avatarURL();
             if (!avatarUrl) {
-                avatarUrl = "https://eliteschw31n.de/fileadmin/external_assets/party-blower.png";
+                avatarUrl = user.defaultAvatarURL;
             }
             const thumbnailBuilder = new discord_js_1.ThumbnailBuilder()
                 .setURL(avatarUrl);
