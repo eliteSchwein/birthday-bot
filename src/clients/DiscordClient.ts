@@ -84,7 +84,7 @@ export class DiscordClient {
 
             console.log(userEntries)
 
-            if(!userEntries) return
+            if(!userEntries || userEntries.length === 0) return
 
             logNotice(`Deleted user ${member.id} (left guild)`)
 
