@@ -6,6 +6,7 @@ import {registerCommands} from "../helper/CommandHelper";
 import {CommandInteraction} from "./interactions/CommandInteraction";
 import {ButtonInteraction} from "./interactions/ButtonInteraction";
 import UserRepository from "../repository/UserRepository";
+import GuildRepository from "../repository/GuildRepository";
 
 export class DiscordClient {
     protected discordClient: Client
@@ -79,19 +80,18 @@ export class DiscordClient {
         })
         this.discordClient.on('guildMemberRemove', async (member) => {
             const userRepository = new UserRepository()
+            const guildRepository = new GuildRepository()
 
-            const userEntries = await userRepository.findByUserId(BigInt(member.id))
+            const guild = await guildRepository.findOneBy({id: BigInt(member.guild.id)})
 
-            console.log(userEntries)
+            const user = await userRepository.findOneByUserAndGuild(guild, member.user)
 
-            if(!userEntries || userEntries.length === 0) return
+            if(!user) return
 
             logNotice(`Deleted user ${member.id} (left guild)`)
 
-            for(const user of userEntries) {
-                await userRepository.remove(user)
-                await userRepository.delete(user)
-            }
+            await userRepository.remove(user)
+            await userRepository.delete(user)
         })
     }
 
