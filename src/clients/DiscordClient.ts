@@ -21,8 +21,10 @@ export class DiscordClient {
 
         this.discordClient = new Client({
             intents: [
+                GatewayIntentBits.GuildPresences,
                 GatewayIntentBits.Guilds,
                 GatewayIntentBits.GuildMessages,
+                GatewayIntentBits.GuildMembers
             ],
             partials: [
                 Partials.Message,
@@ -77,8 +79,6 @@ export class DiscordClient {
         })
         this.discordClient.on('guildMemberRemove', async (member) => {
             const userRepository = new UserRepository()
-
-            console.log(member)
 
             const userEntries = await userRepository.findByUserId(Number.parseInt(member.id))
 

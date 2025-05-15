@@ -19,8 +19,10 @@ class DiscordClient {
         await this.close();
         this.discordClient = new discord_js_1.Client({
             intents: [
+                discord_js_1.GatewayIntentBits.GuildPresences,
                 discord_js_1.GatewayIntentBits.Guilds,
                 discord_js_1.GatewayIntentBits.GuildMessages,
+                discord_js_1.GatewayIntentBits.GuildMembers
             ],
             partials: [
                 discord_js_1.Partials.Message,
@@ -62,7 +64,6 @@ class DiscordClient {
         });
         this.discordClient.on('guildMemberRemove', async (member) => {
             const userRepository = new UserRepository_1.default();
-            console.log(member);
             const userEntries = await userRepository.findByUserId(Number.parseInt(member.id));
             if (!userEntries)
                 return;
