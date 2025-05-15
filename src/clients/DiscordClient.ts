@@ -21,7 +21,6 @@ export class DiscordClient {
 
         this.discordClient = new Client({
             intents: [
-                GatewayIntentBits.GuildPresences,
                 GatewayIntentBits.Guilds,
                 GatewayIntentBits.GuildMessages,
                 GatewayIntentBits.GuildMembers
