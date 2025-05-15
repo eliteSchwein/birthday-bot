@@ -78,9 +78,11 @@ export class DiscordClient {
         this.discordClient.on('guildMemberRemove', async (member) => {
             const userRepository = new UserRepository()
 
+            console.log(member)
+
             const userEntries = await userRepository.findByUserId(Number.parseInt(member.id))
 
-            if(!userEntries) return;
+            if(!userEntries) return
 
             logNotice(`Deleted user ${member.id} (left guild)`)
 

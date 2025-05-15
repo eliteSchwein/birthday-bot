@@ -62,6 +62,7 @@ class DiscordClient {
         });
         this.discordClient.on('guildMemberRemove', async (member) => {
             const userRepository = new UserRepository_1.default();
+            console.log(member);
             const userEntries = await userRepository.findByUserId(Number.parseInt(member.id));
             if (!userEntries)
                 return;
