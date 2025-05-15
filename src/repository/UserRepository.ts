@@ -106,7 +106,7 @@ export default class UserRepository extends Repository<UserEntity>{
             .getCount()
     }
 
-    public async findByUserId(userId: number) {
+    public async findByUserId(userId: bigint) {
         return await this.createQueryBuilder(
             'user'
         )
