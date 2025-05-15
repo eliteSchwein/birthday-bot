@@ -3,35 +3,13 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.initScheduler = initScheduler;
 const UserRepository_1 = require("../repository/UserRepository");
 const App_1 = require("../App");
-const LogHelper_1 = require("./LogHelper");
+const DatabaseHelper_1 = require("./DatabaseHelper");
 function initScheduler() {
     const userRepository = new UserRepository_1.default();
     const discordClient = (0, App_1.getDiscordClient)().getClient();
     setInterval(async () => {
         const time = new Date();
-        let users = await userRepository.getAll();
-        for (const user of users) {
-            try {
-                const guild = user.guild;
-                const guildServer = await discordClient.guilds.fetch(`${guild.id}`);
-                try {
-                    await guildServer.members.fetch(`${user.userId}`);
-                }
-                catch (error) {
-                    if (error.code === 10007) {
-                        await userRepository.remove(user);
-                        await userRepository.delete(user);
-                        (0, LogHelper_1.logNotice)(`Deleted user ${user.userId} (not found in guild)`);
-                    }
-                    else {
-                        (0, LogHelper_1.logWarn)(`Error fetching member ${user.userId}: ${JSON.stringify(error)}`);
-                    }
-                }
-            }
-            catch (guildError) {
-                (0, LogHelper_1.logWarn)(`Error processing guild: ${JSON.stringify(guildError)}`);
-            }
-        }
+        await (0, DatabaseHelper_1.purgeLeftUsers)();
         const formatter = new Intl.DateTimeFormat('de-DE', {
             hour: '2-digit',
             minute: '2-digit',
@@ -49,7 +27,7 @@ function initScheduler() {
         const [dayStr, monthStr] = dateFormatter.format(time).split('.');
         const day = parseInt(dayStr, 10);
         const month = parseInt(monthStr, 10);
-        users = await userRepository.getByDayAndMonth(day, month);
+        const users = await userRepository.getByDayAndMonth(day, month);
         for (const user of users) {
             const guild = user.guild;
             if (!guild.notificationChannel)

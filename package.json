@@ -26,12 +26,12 @@
   "homepage": "https://github.com/eliteSchwein/mooncord#readme",
   "devDependencies": {
     "@discordjs/rest": "^2.5.0",
-    "@types/node": "^22.15.4",
+    "@types/node": "^22.15.18",
     "@types/readline-sync": "^1.4.8",
     "async-wait-until": "2.0.27",
     "axios": "^1.9.0",
     "bytes": "^3.1.2",
-    "esbuild": "^0.25.3",
+    "esbuild": "^0.25.4",
     "eslint": "^9.26.0",
     "eslint-plugin-node": "^11.1.0",
     "eslint-plugin-promise": "^7.2.1",
@@ -44,7 +44,7 @@
     "regex-parser": "^2.3.1",
     "stacktrace-js": "^2.0.2",
     "ts-node": "^10.9.2",
-    "typeorm": "^0.3.22",
+    "typeorm": "^0.3.24",
     "typescript": "^5.8.3",
     "websocket-ts": "^2.2.1",
     "ws": "^8.18.2"

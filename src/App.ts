@@ -1,7 +1,7 @@
 import * as packageConfig from '../package.json'
 import {logRegular, logSuccess} from "./helper/LogHelper";
 import readConfig from "./helper/ConfigHelper";
-import {connectDatabase} from "./helper/DatabaseHelper";
+import {connectDatabase, purgeLeftUsers} from "./helper/DatabaseHelper";
 import "reflect-metadata"
 import {DiscordClient} from "./clients/DiscordClient";
 import {initScheduler} from "./helper/SchedulerHelper";
@@ -24,6 +24,8 @@ async function init() {
 
     logRegular('init scheduler')
     initScheduler()
+
+    await purgeLeftUsers()
 }
 
 export function getDiscordClient() {

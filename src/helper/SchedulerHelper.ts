@@ -2,6 +2,7 @@ import UserRepository from "../repository/UserRepository";
 import {getDiscordClient} from "../App";
 import GuildRepository from "../repository/GuildRepository";
 import {logNotice, logWarn} from "./LogHelper";
+import {purgeLeftUsers} from "./DatabaseHelper";
 
 export function initScheduler() {
     const userRepository = new UserRepository()
@@ -10,28 +11,7 @@ export function initScheduler() {
     setInterval(async () => {
         const time = new Date()
 
-        let users = await userRepository.getAll()
-
-        for (const user of users) {
-            try {
-                const guild = user.guild;
-                const guildServer = await discordClient.guilds.fetch(`${guild.id}`);
-
-                try {
-                    await guildServer.members.fetch(`${user.userId}`);
-                } catch (error) {
-                    if (error.code === 10007) {
-                        await userRepository.remove(user)
-                        await userRepository.delete(user)
-                        logNotice(`Deleted user ${user.userId} (not found in guild)`)
-                    } else {
-                        logWarn(`Error fetching member ${user.userId}: ${JSON.stringify(error)}`);
-                    }
-                }
-            } catch (guildError) {
-                logWarn(`Error processing guild: ${JSON.stringify(guildError)}`);
-            }
-        }
+        await purgeLeftUsers()
 
         const formatter = new Intl.DateTimeFormat('de-DE', {
             hour: '2-digit',
@@ -55,7 +35,7 @@ export function initScheduler() {
         const month = parseInt(monthStr, 10);
 
 
-        users = await userRepository.getByDayAndMonth(day, month)
+        const users = await userRepository.getByDayAndMonth(day, month)
 
         for(const user of users) {
             const guild = user.guild
