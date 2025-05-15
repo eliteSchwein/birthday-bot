@@ -40,7 +40,6 @@ async function disconnectDatabase() {
 async function purgeLeftUsers() {
     const userRepository = new UserRepository_1.default();
     const users = await userRepository.getAll();
-    (0, LogHelper_1.logRegular)('Purge missing users');
     for (const user of users) {
         try {
             const guild = user.guild;

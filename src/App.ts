@@ -25,6 +25,7 @@ async function init() {
     logRegular('init scheduler')
     initScheduler()
 
+    logRegular('Purge missing users')
     await purgeLeftUsers()
 }
 

@@ -105,4 +105,12 @@ export default class UserRepository extends Repository<UserEntity>{
             .where("guild.id = :guildId", { guildId: guild.id })
             .getCount()
     }
+
+    public async findByUserId(userId: number) {
+        return await this.createQueryBuilder(
+            'user'
+        )
+            .where("user.userId = :userId", {userId: userId})
+            .getMany()
+    }
 }

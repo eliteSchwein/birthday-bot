@@ -84,5 +84,10 @@ class UserRepository extends typeorm_1.Repository {
             .where("guild.id = :guildId", { guildId: guild.id })
             .getCount();
     }
+    async findByUserId(userId) {
+        return await this.createQueryBuilder('user')
+            .where("user.userId = :userId", { userId: userId })
+            .getMany();
+    }
 }
 exports.default = UserRepository;

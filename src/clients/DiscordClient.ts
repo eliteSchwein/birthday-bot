@@ -1,10 +1,11 @@
 import {ActivityType, Client, GatewayIntentBits, Partials} from "discord.js";
-import {logEmpty, logRegular, logSuccess} from "../helper/LogHelper";
+import {logEmpty, logNotice, logRegular, logSuccess} from "../helper/LogHelper";
 import {REST} from "@discordjs/rest";
 import {getConfig} from "../helper/ConfigHelper";
 import {registerCommands} from "../helper/CommandHelper";
 import {CommandInteraction} from "./interactions/CommandInteraction";
 import {ButtonInteraction} from "./interactions/ButtonInteraction";
+import UserRepository from "../repository/UserRepository";
 
 export class DiscordClient {
     protected discordClient: Client
@@ -73,6 +74,20 @@ export class DiscordClient {
 
             await (new CommandInteraction()).handleInteraction(interaction)
             await (new ButtonInteraction()).handleInteraction(interaction)
+        })
+        this.discordClient.on('guildMemberRemove', async (member) => {
+            const userRepository = new UserRepository()
+
+            const userEntries = await userRepository.findByUserId(Number.parseInt(member.id))
+
+            if(!userEntries) return;
+
+            logNotice(`Deleted user ${member.id} (left guild)`)
+
+            for(const user of userEntries) {
+                await userRepository.remove(user)
+                await userRepository.delete(user)
+            }
         })
     }
 

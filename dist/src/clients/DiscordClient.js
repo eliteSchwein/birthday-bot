@@ -8,6 +8,7 @@ const ConfigHelper_1 = require("../helper/ConfigHelper");
 const CommandHelper_1 = require("../helper/CommandHelper");
 const CommandInteraction_1 = require("./interactions/CommandInteraction");
 const ButtonInteraction_1 = require("./interactions/ButtonInteraction");
+const UserRepository_1 = require("../repository/UserRepository");
 class DiscordClient {
     discordClient;
     restClient;
@@ -58,6 +59,17 @@ class DiscordClient {
             }
             await (new CommandInteraction_1.CommandInteraction()).handleInteraction(interaction);
             await (new ButtonInteraction_1.ButtonInteraction()).handleInteraction(interaction);
+        });
+        this.discordClient.on('guildMemberRemove', async (member) => {
+            const userRepository = new UserRepository_1.default();
+            const userEntries = await userRepository.findByUserId(Number.parseInt(member.id));
+            if (!userEntries)
+                return;
+            (0, LogHelper_1.logNotice)(`Deleted user ${member.id} (left guild)`);
+            for (const user of userEntries) {
+                await userRepository.remove(user);
+                await userRepository.delete(user);
+            }
         });
     }
     async close() {

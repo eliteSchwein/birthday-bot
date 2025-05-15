@@ -43,8 +43,6 @@ export async function purgeLeftUsers() {
 
     const users = await userRepository.getAll()
 
-    logRegular('Purge missing users')
-
     for (const user of users) {
         try {
             const guild = user.guild;

@@ -20,6 +20,7 @@ async function init() {
     await discordClient.connect();
     (0, LogHelper_1.logRegular)('init scheduler');
     (0, SchedulerHelper_1.initScheduler)();
+    (0, LogHelper_1.logRegular)('Purge missing users');
     await (0, DatabaseHelper_1.purgeLeftUsers)();
 }
 function getDiscordClient() {
