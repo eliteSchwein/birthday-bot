@@ -82,6 +82,8 @@ export class DiscordClient {
 
             const userEntries = await userRepository.findByUserId(Number.parseInt(member.id))
 
+            console.log(userEntries)
+
             if(!userEntries) return
 
             logNotice(`Deleted user ${member.id} (left guild)`)
