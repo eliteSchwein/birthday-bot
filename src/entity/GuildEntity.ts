@@ -7,7 +7,7 @@ export class GuildEntity {
     id: bigint
 
     @Column({nullable: true, type: 'bigint'})
-    notificationChannel: bigint|null
+    notificationChannel: bigint|null = null
 
     @OneToMany(() => UserEntity, (user) => user.guild)
     users: UserEntity[]
