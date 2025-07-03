@@ -14,7 +14,7 @@ const typeorm_1 = require("typeorm");
 const UserEntitiy_1 = require("./UserEntitiy");
 let GuildEntity = class GuildEntity {
     id;
-    notificationChannel;
+    notificationChannel = null;
     users;
 };
 exports.GuildEntity = GuildEntity;
